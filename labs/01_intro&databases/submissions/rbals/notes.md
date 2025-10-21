@@ -110,5 +110,4 @@ All demonstration scripts were executed successfully, and the exercise implement
 
 ## Development Methodology
 
-The exercise code was written manually with inline code completion assistance. The notes were initially drafted by hand and subsequently restructured and refined by GitHub Copilot agent for clarity and scientific formatting. All biological observations and technical findings were cross-validated using ChatGPT to seach for relevant
-resources.
+The exercise code was written manually with inline code completion assistance. The notes were initially drafted by hand and subsequently restructured and refined by GitHub Copilot agent for clarity and scientific formatting. All biological observations and technical findings were cross-validated using ChatGPT to seach for relevant resources.
