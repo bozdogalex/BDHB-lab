@@ -33,7 +33,7 @@ from pathlib import Path
 import sys
 
 from Bio import SeqIO
-# from Bio import Entrez  # TODO: uncomment and use for download
+from Bio import Entrez  # TODO: uncomment and use for download
 
 
 def gc_fraction(seq: str) -> float:
@@ -48,8 +48,8 @@ def gc_fraction(seq: str) -> float:
 
 
 def download_fasta(email: str, out_path: Path, query: str = None,
-                   accession: str = None, db: str = "nuccore",
-                   retmax: int = 3, api_key: str = None) -> int:
+                    accession: str = None, db: str = "nuccore",
+                    retmax: int = 3, api_key: str = None) -> int:
     """
     TODO: Implement downloading from NCBI.
     Steps:
@@ -59,7 +59,31 @@ def download_fasta(email: str, out_path: Path, query: str = None,
       - Write results to out_path.
       - Return the number of records written.
     """
-    raise NotImplementedError("TODO: implement download using Entrez")
+    Entrez.email = email
+    if api_key:
+        Entrez.api_key = api_key
+
+    if accession:
+        # Download single record by accession
+        with Entrez.efetch(db=db, id=accession, rettype="fasta", retmode="text") as handle:
+            records = list(SeqIO.parse(handle, "fasta"))
+    elif query:
+        # Search and download multiple records
+        with Entrez.esearch(db=db, term=query, retmax=retmax) as search_handle:
+            search_results = Entrez.read(search_handle)
+            ids = search_results["IdList"]
+        if not ids:
+            return 0
+        with Entrez.efetch(db=db, id=ids, rettype="fasta", retmode="text") as handle:
+            records = list(SeqIO.parse(handle, "fasta"))
+    else:
+        raise ValueError("Either query or accession must be provided")
+
+    # Write to file
+    with open(out_path, "w") as out_handle:
+        SeqIO.write(records, out_handle, "fasta")
+
+    return len(records)
 
 
 def main():
@@ -77,17 +101,18 @@ def main():
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     # TODO: Call the download_fasta(...) function and save the results
-    # n = download_fasta(args.email, out_path, query=args.query,
-    #                    accession=args.accession, db=args.db,
-    #                    retmax=args.retmax, api_key=args.api_key)
-    # print(f"[ok] Wrote {n} records to: {out_path}")
+    n = download_fasta(args.email, out_path, query=args.query,
+                       accession=args.accession, db=args.db,
+                       retmax=args.retmax, api_key=args.api_key)
+    print(f"[ok] Wrote {n} records to: {out_path}")
 
     # TODO: Read the FASTA file with SeqIO.parse
-    # records = ...
+    records = list(SeqIO.parse(out_path, "fasta"))
 
     # TODO: Compute GC for each sequence and print the results
-    # for rec in records:
-    #     print(f"{rec.id}\tGC={value:.3f}")
+    for rec in records:
+        gc = gc_fraction(str(rec.seq))
+        print(f"{rec.id}\tGC={gc:.3f}")
 
 
 if __name__ == "__main__":
