@@ -27,7 +27,7 @@ def init_score_matrix_local(m: int, n: int):
     TODO: Initialize the (m+1) x (n+1) matrix with all values = 0.
     Hint: use list comprehension or simple loops.
     """
-    raise NotImplementedError("TODO 1: implement init_score_matrix_local")
+    return [[0] * (n + 1) for _ in range(m + 1)]
 
 
 def score_cell_local(score, i: int, j: int, a: str, b: str, match: int, mismatch: int, gap: int):
@@ -39,7 +39,10 @@ def score_cell_local(score, i: int, j: int, a: str, b: str, match: int, mismatch
       - left     = score[i][j-1] + gap
     Result = max(0, diagonal, up, left).
     """
-    raise NotImplementedError("TODO 2: implement scoring for SW")
+    diagonal = score[i-1][j-1] + (match if a == b else mismatch)
+    up = score[i-1][j] + gap
+    left = score[i][j-1] + gap
+    return max(0, diagonal, up, left)
 
 
 def smith_waterman(seq1: str, seq2: str, match=3, mismatch=-3, gap=-2):
