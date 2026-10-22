@@ -11,7 +11,7 @@
 - 01 — Databases & GitHub: [labs/01_intro&databases](labs/01_intro&databases)
 - 02 — Sequence Alignment: [labs/02_alignment](labs/02_alignment)
 - 03 — NGS: [labs/03_formats&NGS](labs/03_formats&NGS)
-- 04 — Phylogenetics: [labs/04_phylogenetics](labs/04_phylogenetics)
+- 04 — Phylogenetics: [labs/04_phylogenetics](labs/04_phylogenetics) · [Slides (PowerPoint)](docs/presentations/04_phylogenetics.pptx)
 - 05 — Clustering: [labs/05_clustering](labs/05_clustering)
 - 07— WGCNA + Diseasome: [labs/06_wgcna](labs/06_wgcna)
 - 08 — Network Viz & GNN: [labs/07_network_viz](labs/07_network_viz)
